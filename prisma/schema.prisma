@@ -1,0 +1,24 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Activity {
+  id         Int      @id @default(autoincrement())
+  type       String   // Cambiamos el enum por un String
+  timestamp  DateTime @default(now())
+  details    String?  // Información adicional, como cantidad de comida
+  babyId     Int
+  baby       Baby      @relation(fields: [babyId], references: [id])
+}
+
+model Baby {
+  id         Int      @id @default(autoincrement())
+  name       String
+  birthDate  DateTime
+  activities Activity[]
+}
